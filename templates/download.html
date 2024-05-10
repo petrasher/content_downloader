@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Скачать видео</title>
+    <style>
+        .loader {
+            border: 16px solid #f3f3f3;
+            border-top: 16px solid #3498db;
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+            margin: auto;
+            display: none;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <h1>Скачать видео</h1>
+    <input type="text" id="video_url" placeholder="Введите ссылку на видео">
+    <button onclick="downloadVideo()">Скачать видео</button>
+    <div class="loader" id="loader"></div>
+    <div id="download_status"></div>
+
+    <script>
+        function downloadVideo() {
+            var videoUrl = document.getElementById("video_url").value;
+            var loader = document.getElementById("loader");
+            var downloadStatus = document.getElementById("download_status");
+            
+            loader.style.display = "block";
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/download/");
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhr.onload = function () {
+                
+                loader.style.display = "none";
+                downloadStatus.innerText = xhr.responseText;
+            };
+            xhr.send(JSON.stringify({ "video_url": videoUrl }));
+        }
+    </script>
+</body>
+</html>
+
+
